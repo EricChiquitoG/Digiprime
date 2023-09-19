@@ -27,6 +27,9 @@ router.get("/directory", sanitizeDirectoryQuery, catchAsync(offers.directory));
 
 router.get("/new", isLoggedIn, offers.newForm);
 
+router.get("/dismitted", isLoggedIn, offers.dismitted);
+
+
 router
   .route("/:id")
   .get(isValidId, catchAsync(offers.show))

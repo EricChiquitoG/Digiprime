@@ -7,6 +7,7 @@
   <div class="col-md-6 offset-md-3 col-lg-4 offset-lg-4">
     <form
       action="<%= baseUrl %>/offers"
+      id="myform"
       method="POST"
       novalidate
       class="validated-form"
@@ -25,6 +26,33 @@
         <label class="form-label" for="title">Title</label>
         <div class="valid-feedback">Looks good!</div>
       </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="man_code">Fetch Data</label>
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="man_code"
+            placeholder="Optional"
+            aria-label="man_code"
+            aria-describedby="man_code-label"
+            optional
+          />
+<!-- Added code -->
+          <select
+          class="input-group-text"
+          id="fetch_type"
+        >
+          <option value="bat">Battery</option>
+          <option value="mancode">Automotive</option>
+        </select>
+<!-- Added code -->
+          <th scope="col"><a class="btn btn-primary customActionButton" style="float:right;" role="button">Fetch data</a></th>
+          <!-- <button id="customActionButton" type="button" class="btn btn-primary">Retrieve Data</button> --->
+        </div>
+      </div>
+
 
       <div class="form-floating mb-3">
         <input
@@ -82,31 +110,29 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label" for="costumer">Reference sector</label>
-        <select
-          class="form-select"
-          aria-label=".form-select-sm example"
-          name="offer[referenceSector]"
-          id="referenceSector"
-        >
-          <% for (let referenceSector of referenceSectors) { %>
-          <option value="<%= referenceSector %>"><%= referenceSector %></option>
-          <% } %>
-        </select>
+        <label class="form-label" for="referenceSector">Reference sector / Value chain position</label>
+        <div class="input-group">
+          <input type="text" class="form-control" aria-label=".form-select-sm example" name="offer[referenceSector]" id="referenceSector" placeholder="Enter a value manually">
+          <select class="form-select" id="referenceSectorSelector">
+            <option value="" selected disabled>Select an option</option>
+            <% for (let referenceSector of referenceSectors) { %>
+              <option value="<%= referenceSector %>"><%= referenceSector %></option>
+            <% } %>
+          </select>
+        </div>
       </div>
-
+      
       <div class="mb-3">
-        <label class="form-label" for="costumer">Reference type</label>
-        <select
-          class="form-select"
-          aria-label=".form-select-sm example"
-          name="offer[referenceType]"
-          id="referenceType"
-        >
-          <% for (let referenceType of referenceTypes) { %>
-          <option value="<%= referenceType %>"><%= referenceType %></option>
-          <% } %>
-        </select>
+        <label class="form-label" for="referenceType">Reference type / Circular entity</label>
+        <div class="input-group">
+          <input type="text" class="form-control" aria-label=".form-select-sm example" name="offer[referenceType]" id="referenceType" placeholder="Enter a value manually">
+          <select class="form-select" id="referenceTypeSelector">
+            <option value="" selected disabled>Select an option</option>
+            <% for (let referenceType of referenceTypes) { %>
+              <option value="<%= referenceType %>"><%= referenceType %></option>
+            <% } %>
+          </select>
+        </div>
       </div>
 
       <div class="mb-3">
@@ -170,6 +196,9 @@
       </div>
     </form>
 
+
     <footer></footer>
   </div>
 </div>
+<script src="<%= baseUrl %>/javascripts/customAction.js"></script>
+<script src="<%= baseUrl %>/javascripts/formController.js"></script>

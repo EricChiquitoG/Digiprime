@@ -28,6 +28,7 @@ const brokerRoutes = require("./routes/broker");
 const notificationRoutes = require("./routes/notification");
 const { notificationMiddleware } = require("./controllers/notification");
 const formatDistanceToNow = require("date-fns/formatDistanceToNow");
+const cookie = require('cookie');
 
 // const { csrfProtection } = require("./utils/csrf");
 
@@ -96,6 +97,7 @@ const scriptSrcUrls = [
   "https://kit.fontawesome.com/",
   "https://cdnjs.cloudflare.com/",
   "https://cdn.jsdelivr.net",
+  //'https://automotive.digiprime-mvp.red.extrasys.it/orc/data/edm',
 ];
 
 const styleSrcUrls = [
@@ -105,6 +107,7 @@ const styleSrcUrls = [
   "https://fonts.googleapis.com/",
   "https://use.fontawesome.com/",
   "https://cdn.jsdelivr.net",
+  //'https://automotive.digiprime-mvp.red.extrasys.it/orc/data/edm',
 ];
 
 const connectSrcUrls = [
@@ -112,6 +115,8 @@ const connectSrcUrls = [
   "https://a.tiles.mapbox.com/",
   "https://b.tiles.mapbox.com/",
   "https://events.mapbox.com/",
+  "https://automotive.digiprime-mvp.red.extrasys.it/orc/data/edm",
+  "https://automotive.digiprime-mvp.red.extrasys.it"
 ];
 
 let imgSrcUrls = [
@@ -161,11 +166,22 @@ const strategyOpts = {
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(
-  new LocalStrategy(strategyOpts, (req, username, password, done) => {
-    userController
-      .authenticate(req, username, password)
-      .then((user) => done(null, user))
-      .catch((err) => done(err, false));
+  new LocalStrategy(strategyOpts, async (req, username, password, done) => {
+    try {
+      const user = await userController.authenticate(req, username, password);
+      if (user) {
+        const jwtToken = user.JWT;
+        
+        // Set the JWT token as a cookie
+        const jwtCookie = cookie.serialize('jwt', jwtToken, {
+          path: '/',
+        });
+        req.res.cookie(jwtCookie);
+      }
+      done(null, user);
+    } catch (err) {
+      done(err, false);
+    }
   })
 );
 

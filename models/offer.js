@@ -15,6 +15,7 @@ const opts = { toJSON: { virtuals: true } };
 const OfferSchema = new Schema(
   {
     title: String,
+    man_code: String,
     images: [ImageSchema],
     geometry: {
       type: {
@@ -38,12 +39,12 @@ const OfferSchema = new Schema(
     referenceSector: {
       type: String,
       // lowercase: true,
-      enum: ["Composites", "Batteries"],
+      //enum: ["Composites", "Batteries"],
     },
     referenceType: {
       type: String,
       // lowercase: true,
-      enum: ["Material", "Product"],
+      //enum: ["Material", "Product"],
     },
     location: String,
     author: {
