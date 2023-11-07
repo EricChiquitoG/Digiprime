@@ -171,7 +171,7 @@ passport.use(
       const user = await userController.authenticate(req, username, password);
       if (user) {
         const jwtToken = user.JWT;
-        
+        console.log(jwtToken)
         // Set the JWT token as a cookie
         const jwtCookie = cookie.serialize('jwt', jwtToken, {
           path: '/',

@@ -2,6 +2,8 @@ const User = require("../models/user");
 const ne = require("../lib/ne");
 const auth = require("../lib/auth");
 const ExpressError = require("../utils/ExpressError");
+const cookie = require('cookie');
+
 
 module.exports.login = (_req, res) => {
   res.render("users/login");
@@ -28,6 +30,9 @@ module.exports.authenticate = async (req, username, password) => {
     const token = await auth.login(username, password);
     email = token.user.email;
     userId = token.user.uuid;
+    jwt = token.jwt;
+
+    
   } catch (err) {
     if (err.isAxiosError && err.response.data.error == "unauthorized") {
       req.flash("error", "Wrong username or password");
@@ -57,6 +62,8 @@ module.exports.authenticate = async (req, username, password) => {
     // fails, rather than this call.
     await user.save();
   }
+  user.JWT = jwt;
+  console.log(user)
 
   return user;
 };
